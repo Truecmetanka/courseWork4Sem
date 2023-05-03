@@ -1,0 +1,69 @@
+.searchbox {
+    min-width: 300px;
+    max-width: 1200px;
+    background-color: rgba(0, 0, 0, 0.507);
+    color: white;
+    margin: 20px;
+    padding: 0 20px;
+    border-radius: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-evenly;
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.37);
+}
+
+.vehicles {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.vehicles button {
+    width: 150px;
+    height: 30px;
+    margin: 15px;
+    border: 0;
+    background-color: skyblue;
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.37);
+    border-radius: 5px;
+}
+
+.moveinf {
+    margin: 15px 0;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.moveinf input{
+    height: 50px;
+    border: 0;
+    box-sizing: border-box;
+    outline: 0;
+    font-size: 1.2em;
+    font-family: "Murecho Light";
+}
+
+.moveinf input:nth-child(1),input:nth-child(2) {
+    width: 49%;
+}
+
+
+.moveinf input:nth-child(3),input:nth-child(4) {
+    width: 32%;
+}
+
+.moveinf button {
+    width: 32%;
+    height: 50px;
+    border: 0;
+    box-sizing: border-box;
+    outline: 0;
+    font-size: 1.2em;
+}
