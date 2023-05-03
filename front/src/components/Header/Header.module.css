@@ -1,0 +1,28 @@
+.header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.062);
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.062);
+}
+
+.header .acc {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 150px;
+}
+
+.header .acc > span:nth-child(1) {
+    font-size: 2.2em;
+    transform: translateY(5%);
+}
+
+header * {
+    user-select: none;
+    cursor: pointer;
+}
