@@ -81,3 +81,24 @@
     display: block;
     font-family: "Murecho Extra Light";
 }
+
+.err_mes {
+    position: absolute;
+    background-color: rgba(161, 161, 161, 0.575);
+    padding: 10px;
+    color: black;
+    border: 3px solid rgb(172, 9, 9);
+    border-radius: 10px;
+    transition: all 0.5s ease-in-out;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.err_mes span {
+    display: inline-block;
+    font-size: 2.5em;
+    color: red;
+    transform: translateY(5%);
+}
