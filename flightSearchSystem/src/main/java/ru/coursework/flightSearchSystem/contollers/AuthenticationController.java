@@ -21,7 +21,6 @@ public class AuthenticationController {
      *                "username": имя пользователя,
      *                "email": маил пользователя,
      *                "password": пароль пользователя,
-     *                "bestScore": рекорд пользователя (int)
      *                }
      * @return JW token вида - {
      * "token": токен
