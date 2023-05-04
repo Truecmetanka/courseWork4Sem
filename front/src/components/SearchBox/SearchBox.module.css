@@ -18,17 +18,20 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: center;
 }
 
 .vehicles button {
-    width: 150px;
-    height: 30px;
+    width: 160px;
+    height: 40px;
     margin: 15px;
     border: 0;
     background-color: skyblue;
     box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.37);
     border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.05em;
+    color: darkslategray;
 }
 
 .moveinf {
@@ -37,8 +40,8 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: center;
-    gap: 5px;
+    justify-content: space-evenly;
+    gap: 10px;
 }
 
 .moveinf input{
@@ -46,8 +49,9 @@
     border: 0;
     box-sizing: border-box;
     outline: 0;
-    font-size: 1.2em;
+    font-size: 1.5em;
     font-family: "Murecho Light";
+    padding: 0 10px;
 }
 
 .moveinf input:nth-child(1),input:nth-child(2) {
@@ -65,5 +69,7 @@
     border: 0;
     box-sizing: border-box;
     outline: 0;
-    font-size: 1.2em;
+    font-size: 1.4em;
+    background-color: #00AA00;
+    color: white;
 }

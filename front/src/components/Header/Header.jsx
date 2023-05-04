@@ -1,6 +1,7 @@
 import React from 'react'
 import classes from './Header.module.css'
 import { FaUserAlt } from "react-icons/fa";
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   return (
@@ -11,8 +12,8 @@ const Header = () => {
                 <FaUserAlt/>
             </span>
             <span>
-                <div>Войти</div>
-                <div>Регистрация</div>
+                <Link to='/login'>Войти</Link>
+                <Link to='/register'>Регистрация</Link>
             </span>
         </div>
     </header>
