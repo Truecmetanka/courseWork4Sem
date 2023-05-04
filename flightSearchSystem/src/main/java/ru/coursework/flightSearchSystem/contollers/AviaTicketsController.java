@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class AviaTicketsController {
 
@@ -68,6 +70,7 @@ public class AviaTicketsController {
         String currency = jsonNode.get("currency").asText();
         JsonNode dataNode = jsonNode.get("data");
 
+        convertCompanyCodeToName(dataNode);
         return dataNode;
     }
 
@@ -86,4 +89,29 @@ public class AviaTicketsController {
 
         return "City not found"; // Если город не найден, возвращаем null
     }
+
+    private String getCompanyNameByCode(String code) throws IOException {
+        String json = new String(Files.readAllBytes(Paths.get(
+                "src/main/resources/static/aviacompanies.json")));
+        JSONArray companies = new JSONArray(json); // Создаем массив JSON объектов из содержимого файла
+
+        for (int i = 0; i < companies.length(); i++) {
+            JSONObject company = companies.getJSONObject(i);
+            if (company != null && company.optString("code").equals(code)) {
+                return company.optString("name");
+            }
+        }
+
+        return null;
+    }
+
+    private void convertCompanyCodeToName(JsonNode dataNode) throws IOException {
+        for (int i = 0; i < 10; i++) {
+            String name = getCompanyNameByCode(String.valueOf(dataNode.get(i).get("airline")));
+            JSONObject j = new JSONObject(dataNode.get(i));
+            j.put("airline", name);
+
+        }
+    }
+
 }
