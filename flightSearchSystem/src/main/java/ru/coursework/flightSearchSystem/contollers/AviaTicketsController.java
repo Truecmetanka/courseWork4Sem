@@ -3,6 +3,7 @@ package ru.coursework.flightSearchSystem.contollers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import ru.coursework.flightSearchSystem.services.AviaService;
 import ru.coursework.flightSearchSystem.util.FlightRequest;
 
 import java.io.IOException;
@@ -18,7 +20,10 @@ import java.nio.file.Paths;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
+@RequiredArgsConstructor
 public class AviaTicketsController {
+
+    private final AviaService aviaService;
 
     /**
      * @param flightRequest json вида {
@@ -50,8 +55,8 @@ public class AviaTicketsController {
     @GetMapping("/getFlights")
     public JsonNode getFlights(@RequestBody FlightRequest flightRequest) throws IOException {
 
-        String origin = findIATACode(flightRequest.getOrigin());
-        String destination = findIATACode(flightRequest.getDestination());
+        String origin = aviaService.findIATACode(flightRequest.getOrigin());
+        String destination = aviaService.findIATACode(flightRequest.getDestination());
 
         String urlToApi = "https://api.travelpayouts.com/aviasales/v3/prices_for_dates?" +
                 "origin=" + origin + "&destination=" + destination +
@@ -70,48 +75,11 @@ public class AviaTicketsController {
         String currency = jsonNode.get("currency").asText();
         JsonNode dataNode = jsonNode.get("data");
 
-        convertCompanyCodeToName(dataNode);
+        aviaService.convertCompanyCodeToName(dataNode);
+
         return dataNode;
     }
 
-    private String findIATACode(String city) throws IOException {
-        String json = new String(Files.readAllBytes(Paths.get(
-                "src/main/resources/static/iatacodescities.json")));
-        JSONArray airports = new JSONArray(json); // Создаем массив JSON объектов из содержимого файла
 
-
-        for (int i = 0; i < airports.length(); i++) {
-            JSONObject airport = airports.getJSONObject(i);
-            if (airport != null && airport.optString("name").equals(city)) {
-                return airport.optString("code"); // Возвращаем IATA код для найденного города
-            }
-        }
-
-        return "City not found"; // Если город не найден, возвращаем null
-    }
-
-    private String getCompanyNameByCode(String code) throws IOException {
-        String json = new String(Files.readAllBytes(Paths.get(
-                "src/main/resources/static/aviacompanies.json")));
-        JSONArray companies = new JSONArray(json); // Создаем массив JSON объектов из содержимого файла
-
-        for (int i = 0; i < companies.length(); i++) {
-            JSONObject company = companies.getJSONObject(i);
-            if (company != null && company.optString("code").equals(code)) {
-                return company.optString("name");
-            }
-        }
-
-        return null;
-    }
-
-    private void convertCompanyCodeToName(JsonNode dataNode) throws IOException {
-        for (int i = 0; i < 10; i++) {
-            String name = getCompanyNameByCode(String.valueOf(dataNode.get(i).get("airline")));
-            JSONObject j = new JSONObject(dataNode.get(i));
-            j.put("airline", name);
-
-        }
-    }
 
 }
