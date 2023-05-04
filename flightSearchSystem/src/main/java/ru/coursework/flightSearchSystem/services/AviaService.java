@@ -51,8 +51,6 @@ public class AviaService {
         for (int i = 0; i < 10; i++) {
             JsonNode airlineNode = dataNode.get(i);
             String name = getCompanyNameByCode(dataNode.get(i).get("airline").asText());
-            System.out.println(String.valueOf(dataNode.get(i).get("airline")));
-            System.out.println(name);
             TextNode newAirlineNode = new TextNode(name);
 
             ((ObjectNode) airlineNode).set("airline", newAirlineNode);
