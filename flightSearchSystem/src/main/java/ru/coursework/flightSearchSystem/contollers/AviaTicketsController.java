@@ -6,10 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import ru.coursework.flightSearchSystem.services.AviaService;
 import ru.coursework.flightSearchSystem.util.FlightRequest;
@@ -52,7 +49,7 @@ public class AviaTicketsController {
      * @throws JsonProcessingException
      */
 
-    @GetMapping("/getFlights")
+    @PostMapping("/getFlights")
     public JsonNode getFlights(@RequestBody FlightRequest flightRequest) throws IOException {
 
         String origin = aviaService.findIATACode(flightRequest.getOrigin());
