@@ -1,5 +1,6 @@
 .searchbox {
     min-width: 300px;
+    width: 80vw;
     max-width: 1200px;
     background-color: rgba(0, 0, 0, 0.507);
     color: white;
@@ -24,7 +25,7 @@
 .vehicles button {
     width: 160px;
     height: 40px;
-    margin: 15px;
+    margin: 15px 5px;
     border: 0;
     background-color: skyblue;
     border-radius: 5px;

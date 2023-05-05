@@ -7,7 +7,7 @@
     flex-direction: column;
 }
 
-main > h1, p {
+main > h1, main > p {
     color: white;
     margin: 5px;
 }

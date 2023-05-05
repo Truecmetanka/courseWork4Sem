@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 const Header = () => {
   return (
     <header className={classes.header}>
-        <h2>PickTicket</h2>
+        <Link to='/'><h2>PickTicket</h2></Link>
         <div className={classes.acc}>
             <span>
                 <FaUserAlt/>
