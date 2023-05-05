@@ -48,12 +48,22 @@ public class AviaService {
 
     public void convertCompanyCodeToName(JsonNode dataNode) throws IOException {
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < dataNode.size() ; i++) {
             JsonNode airlineNode = dataNode.get(i);
             String name = getCompanyNameByCode(dataNode.get(i).get("airline").asText());
             TextNode newAirlineNode = new TextNode(name);
 
             ((ObjectNode) airlineNode).set("airline", newAirlineNode);
+
+
+        }
+    }
+
+    public void addIATACodeOfAirport(JsonNode dataNode) {
+        for (int i = 0; i < dataNode.size() ; i++) {
+
+            TextNode newAirlineNode = new TextNode(dataNode.get(i).get("airline").asText());
+            ((ObjectNode) dataNode.get(i)).set("IATA", newAirlineNode);
 
         }
     }
