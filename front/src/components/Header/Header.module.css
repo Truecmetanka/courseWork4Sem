@@ -12,6 +12,8 @@
 header * {
     user-select: none;
     cursor: pointer;
+    color: white;
+    text-decoration: none;
 }
 
 .header .acc {
@@ -29,6 +31,5 @@ header * {
 
 .header .acc * {
     text-decoration: none;
-    color: white;
     display: block;
 }

@@ -6,20 +6,14 @@ const initialState = []
 
 const cookie = new Cookie()
 
-
-            // "origin": query.origin,
-            // "destination": query.destination,
-            // "departure_at": query.departure_at,
-            // "return_at": query.return_at
-
 export const fetchRoutes = createAsyncThunk('getRoutes',
     async (query) => {
         const data = await axios.post(`http://localhost:8080/${query.vehicle}`,
         {
-            "origin": "Ставрополь",
-            "destination": "Москва",
-            "departure_at": "2023-06-03",
-            "return_at": "2023-06-06"
+            "origin": query.origin,
+            "destination": query.destination,
+            "departure_at": query.departure_at,
+            "return_at": query.return_at
         },
         {
             headers: {
@@ -27,7 +21,7 @@ export const fetchRoutes = createAsyncThunk('getRoutes',
             }
         })
 
-        return data
+        return data.data
     }
 )
 
@@ -38,11 +32,12 @@ const routesSlice = createSlice({
     },
     extraReducers: {
         [fetchRoutes.fulfilled]: (state, action) => {
-            state = [...state, ...action.payload]
-            console.log(state)
+            return [...action.payload]
         }
     }
 })
 
 export const routesReducer = routesSlice.reducer
-export const selectRoutes = (state) => state.routes
+export const selectRoutes = (state) => {
+    return state.routes
+}
