@@ -1,22 +1,72 @@
-import React from 'react'
+import React, { useState } from 'react'
 import classes from './SearchBox.module.css'
+import { useDispatch } from 'react-redux'
+import { useRef } from 'react'
+import { setQuery } from '../../redux/slices/query'
 
 const SearchBox = () => {
+  
+  const dispatch = useDispatch()
+  const [vehicles, setVehicles] = useState([])
+
+  const allVehicles = ["getFlights", "getTrains", "getBuses"]
+
+  const addVehicle = (vehicle) => {
+    if (vehicles.includes(vehicle)) {
+      setVehicles(vehicles.filter(item => item !== vehicle))
+    }
+    else {
+      setVehicles([...vehicles, vehicle])
+    }
+  }
+
+  const origin = useRef()
+  const destination = useRef()
+  const departure_at = useRef()
+  const return_at = useRef()
+
+  const search = (event) => {
+    event.preventDefault()
+    dispatch(setQuery({
+      origin: origin.current.value,
+      destination: destination.current.value,
+      departure_at: departure_at.current.value,
+      return_at: return_at.current.value,
+      vehicles: vehicles
+    }))
+  }
+  
+
   return (
     <div className={classes.searchbox}>
       <div className={classes.vehicles}>
-        <button>Все билеты</button>
-        <button>Самолеты</button>
-        <button>Поезда</button>
-        <button>Автобусы</button>
+        <button style={{
+          outline: (vehicles.sort().toString() === allVehicles.sort().toString() ? "5px solid #00AA00" : "0")
+          }}
+          onClick={() => {setVehicles(vehicles.sort().toString() === allVehicles.sort().toString() ? [] : [...allVehicles])}}
+          >Все билеты</button>
+        <button style={{
+          outline: (vehicles.includes("getFlights") ? "5px solid #00AA00" : "0")
+          }}
+          onClick={() => {addVehicle("getFlights")}}
+          >Самолеты</button>
+        <button style={{
+          outline: (vehicles.includes("getTrains") ? "5px solid #00AA00" : "0")
+          }}
+          onClick={() => {addVehicle("getTrains")}}
+          >Поезда</button>
+        <button style={{
+          outline: (vehicles.includes("getBuses") ? "5px solid #00AA00" : "0")
+          }}
+          onClick={() => {addVehicle("getBuses")}}
+          >Автобусы</button>
       </div>
       <form className={classes.moveinf}>
-        <input type='text'/>
-        <input type='text'/>
-        <input type='date'/>
-        <input type='date'/>
-
-        <button>Найти билеты</button>
+        <input ref={origin} placeholder='Откуда' type='text'/>
+        <input ref={destination} placeholder='Куда' type='text'/>
+        <input ref={departure_at} type='date'/>
+        <input ref={return_at} type='date'/>
+        <button className={classes.send_query} onClick={(event) => {search(event)}}>Найти билеты</button>
       </form>
     </div>
   )
