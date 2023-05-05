@@ -4,16 +4,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import ru.coursework.flightSearchSystem.services.AviaService;
 import ru.coursework.flightSearchSystem.util.FlightRequest;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -45,6 +44,7 @@ public class AviaTicketsController {
      * "duration_to": 80,
      * "duration_back": 90,
      * "link": "/search/MOW0506LED10061?t=UT16859814001685986200000080VKOLED16864221001686427500000090LEDVKO_6547ad8b43ccbf1e95eb0961fd88e5c8_6790&search_date=04052023&expected_price_uuid=166699b4-25b4-49a5-a9a3-3243659a358d&expected_price_currency=rub"
+     * "IATA": "код аэропорта"
      * }
      * @throws JsonProcessingException
      */
