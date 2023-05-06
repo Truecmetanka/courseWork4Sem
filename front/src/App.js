@@ -3,6 +3,7 @@ import './App.css';
 import MainPage from './pages/MainPage/MainPage';
 import RegPage from './pages/RegPage/RegPage';
 import LogPage from './pages/LogPage/LogPage';
+import UserPage from './pages/UserPage/UserPage';
 
 function App() {
   return (
@@ -12,7 +13,7 @@ function App() {
         <Route path='/main' element={<MainPage/>}/>
         <Route path='/register' element={<RegPage/>}/>
         <Route path='/login' element={<LogPage/>}/>
-        <Route path='/account' element={<></>}/>
+        <Route path='/account' element={<UserPage/>}/>
       </Routes>
     </BrowserRouter>
   );

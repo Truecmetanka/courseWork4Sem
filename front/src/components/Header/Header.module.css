@@ -7,16 +7,20 @@
     color: white;
     background-color: rgba(0, 0, 0, 0.062);
     box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.062);
+    position: sticky;
+    top: 0;
 }
 
 header * {
     user-select: none;
     cursor: pointer;
+    color: white;
+    text-decoration: none;
 }
 
 .header .acc {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     flex-wrap: wrap;
     align-items: center;
     width: 150px;
@@ -29,6 +33,5 @@ header * {
 
 .header .acc * {
     text-decoration: none;
-    color: white;
     display: block;
 }
