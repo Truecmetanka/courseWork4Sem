@@ -3,8 +3,9 @@ import React, { useEffect } from 'react'
 import classes from './TicketList.module.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectQuery } from '../../redux/slices/query'
-import { fetchRoutes, selectRoutes } from '../../redux/slices/routes'
-import TicketCard from '../TicketCard/TicketCard'
+import { selectRoutes } from '../../redux/slices/routes'
+import PlaneTicketCard from '../TicketCard/PlaneTicket/PlaneTicketCard'
+import TrainTicketCard from '../TicketCard/TrainTicket/TrainTicketCard'
 
 const TicketList = () => {
 
@@ -16,19 +17,21 @@ const TicketList = () => {
 
     useEffect(() => {
         query.vehicles.forEach((vehicle) => {
-            dispatch(fetchRoutes({
+            dispatch(vehicle({
                 origin: query.origin,
                 destination: query.destination,
                 departure_at: query.departure_at,
-                return_at: query.return_at,
-                vehicle: vehicle
+                return_at: query.return_at
             }))
         })
     }, [query])
+
+    console.log(data)
+
   return (
     <div className={classes.tickets}>
-        {data.map((ticket, index) =>
-            <TicketCard key={index} 
+        {data.flights.map((ticket, index) =>
+            <PlaneTicketCard key={index} 
                 origin_airport={ticket.origin_airport}
                 destination_airport={ticket.destination_airport}
                 price={ticket.price} 
@@ -41,10 +44,25 @@ const TicketList = () => {
                 duration={ticket.duration}
                 duration_to={ticket.duration_to} 
                 duration_back={ticket.duration_back}
-                link={ticket.link} 
+                link={ticket.link}
                 IATA={ticket.IATA} 
                 origin={query.origin}
                 destination={query.destination}/>)}
+        {data.trains.map((station) => station.map((ticket, index) => 
+            <TrainTicketCard key={index}
+                route_num={ticket.thread.number}
+                route_title={ticket.thread.title}
+                logo={ticket.thread.logo}
+                carrier={ticket.thread.carrier}
+                origin={ticket.from.title}
+                destination={ticket.to.title}
+                sec_duration={ticket.duration}
+                departure={ticket.departure}
+                arrival={ticket.arrival}
+                dep_code={ticket.from.code}
+                arr_code={ticket.to.code}
+            />
+        ))}
     </div>
   )
 }

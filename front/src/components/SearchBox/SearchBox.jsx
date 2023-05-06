@@ -3,13 +3,14 @@ import classes from './SearchBox.module.css'
 import { useDispatch } from 'react-redux'
 import { useRef } from 'react'
 import { setQuery } from '../../redux/slices/query'
+import { fetchBuses, fetchFlights, fetchTrains } from '../../redux/slices/routes'
 
 const SearchBox = () => {
   
   const dispatch = useDispatch()
   const [vehicles, setVehicles] = useState([])
 
-  const allVehicles = ["getFlights", "getTrains", "getBuses"]
+  const allVehicles = [fetchFlights, fetchTrains, fetchBuses]
 
   const addVehicle = (vehicle) => {
     if (vehicles.includes(vehicle)) {
@@ -46,19 +47,19 @@ const SearchBox = () => {
           onClick={() => {setVehicles(vehicles.sort().toString() === allVehicles.sort().toString() ? [] : [...allVehicles])}}
           >Все билеты</button>
         <button style={{
-          outline: (vehicles.includes("getFlights") ? "5px solid #00AA00" : "0")
+          outline: (vehicles.includes(fetchFlights) ? "5px solid #00AA00" : "0")
           }}
-          onClick={() => {addVehicle("getFlights")}}
+          onClick={() => {addVehicle(fetchFlights)}}
           >Самолеты</button>
         <button style={{
-          outline: (vehicles.includes("getTrains") ? "5px solid #00AA00" : "0")
+          outline: (vehicles.includes(fetchTrains) ? "5px solid #00AA00" : "0")
           }}
-          onClick={() => {addVehicle("getTrains")}}
+          onClick={() => {addVehicle(fetchTrains)}}
           >Поезда</button>
         <button style={{
-          outline: (vehicles.includes("getBuses") ? "5px solid #00AA00" : "0")
+          outline: (vehicles.includes(fetchBuses) ? "5px solid #00AA00" : "0")
           }}
-          onClick={() => {addVehicle("getBuses")}}
+          onClick={() => {addVehicle(fetchBuses)}}
           >Автобусы</button>
       </div>
       <form className={classes.moveinf}>

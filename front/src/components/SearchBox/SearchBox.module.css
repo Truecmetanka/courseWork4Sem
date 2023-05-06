@@ -50,8 +50,10 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-between;
     gap: 10px;
+    overflow: hidden;
+    border-radius: 10px;
 }
 
 .moveinf input{
@@ -62,6 +64,7 @@
     font-size: 1.5em;
     font-family: "Murecho Light";
     padding: 0 10px;
+    background-color: aliceblue;
 }
 
 .moveinf input:nth-child(1),input:nth-child(2) {

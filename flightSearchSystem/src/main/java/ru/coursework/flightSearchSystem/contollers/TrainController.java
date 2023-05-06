@@ -9,6 +9,7 @@ import ru.coursework.flightSearchSystem.services.TrainService;
 import ru.coursework.flightSearchSystem.util.TrainRequest;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -94,33 +95,46 @@ public class TrainController {
      */
 
     @PostMapping("/getTrains")
-    public JsonNode getTrains(@RequestBody TrainRequest trainRequest) throws IOException {
+    public ArrayList<JsonNode> getTrains(@RequestBody TrainRequest trainRequest) throws IOException {
 
-        String from = trainService.findCodeByName(trainRequest.getFrom());
-        String to = trainService.findCodeByName(trainRequest.getTo());
+        ArrayList<String> from = trainService.findCodeByName(trainRequest.getFrom());
+        ArrayList<String> to = trainService.findCodeByName(trainRequest.getTo());
 
-        String urlToApi = "https://api.rasp.yandex.net/v3.0/search/?" +
-                "format=json" +
-                "&from=" + from +
-                "&to=" + to +
-                "&lang=ru_RU" +
-                "&page=1" +
-                "&date=" + trainRequest.getDeparture_at() +
-                "&apikey=8a9f7fda-a5fc-451d-b0ac-8035ae9158ba" +
-                "&system=yandex";
+        ArrayList<JsonNode> allRoutes = new ArrayList<>();
 
-        RestTemplate restTemplate = new RestTemplate();
-        String result = restTemplate.getForObject(urlToApi, String.class);
+        for (String code_from: from) {
+            for (String code_to: to) {
+                try {
+                    String urlToApi = "https://api.rasp.yandex.net/v3.0/search/?" +
+                            "format=json" +
+                            "&from=" + code_from +
+                            "&to=" + code_to +
+                            "&lang=ru_RU" +
+                            "&page=1" +
+                            "&date=" + trainRequest.getDeparture_at() +
+                            "&apikey=7fe3b687-8829-417a-b302-995608a402a9" +
+                            "&system=yandex";
 
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode jsonNode = mapper.readTree(result);
+                    RestTemplate restTemplate = new RestTemplate();
+                    String result = restTemplate.getForObject(urlToApi, String.class);
 
-//        boolean success = jsonNode.get("success").asBoolean();
-//        String currency = jsonNode.get("currency").asText();
+                    ObjectMapper mapper = new ObjectMapper();
+                    JsonNode jsonNode = mapper.readTree(result);
 
-        JsonNode dataNode = jsonNode.get("segments");
+                    //        boolean success = jsonNode.get("success").asBoolean();
+                    //        String currency = jsonNode.get("currency").asText();
 
+                    JsonNode dataNode = jsonNode.get("segments");
 
-        return dataNode;
+                    if (dataNode.size() > 0) {
+                        allRoutes.add(dataNode);
+                    }
+                }
+                catch (Exception e) {
+
+                }
+            }
+        }
+        return allRoutes;
     }
 }
