@@ -2,13 +2,18 @@ package ru.coursework.flightSearchSystem.contollers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import ru.coursework.flightSearchSystem.entities.Person;
+import ru.coursework.flightSearchSystem.services.TrainRequestService;
 import ru.coursework.flightSearchSystem.services.TrainService;
-import ru.coursework.flightSearchSystem.util.TrainRequest;
+import ru.coursework.flightSearchSystem.entities.TrainRequest;
+import ru.coursework.flightSearchSystem.util.AuthenticatedPersonService;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -16,6 +21,9 @@ import java.io.IOException;
 public class TrainController {
 
     private final TrainService trainService;
+    private final TrainRequestService trainRequestService;
+    private final AuthenticatedPersonService authenticatedPersonService;
+    private final EntityManager entityManager;
 
     /**
      * @param trainRequest вида {
@@ -99,13 +107,14 @@ public class TrainController {
         String from = trainService.findCodeByName(trainRequest.getFrom());
         String to = trainService.findCodeByName(trainRequest.getTo());
 
+
         String urlToApi = "https://api.rasp.yandex.net/v3.0/search/?" +
                 "format=json" +
                 "&from=" + from +
                 "&to=" + to +
                 "&lang=ru_RU" +
                 "&page=1" +
-                "&date=" + trainRequest.getDeparture_at() +
+                "&date=" + trainRequest.getCreatedAt() +
                 "&apikey=8a9f7fda-a5fc-451d-b0ac-8035ae9158ba" +
                 "&system=yandex";
 
@@ -115,11 +124,12 @@ public class TrainController {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = mapper.readTree(result);
 
-//        boolean success = jsonNode.get("success").asBoolean();
-//        String currency = jsonNode.get("currency").asText();
-
         JsonNode dataNode = jsonNode.get("segments");
 
+        trainRequest.setCreatedAt(LocalDate.now());
+        trainRequest.setPerson_id(authenticatedPersonService.getAuthenticatedPerson().getId());
+
+        trainRequestService.saveRequest(trainRequest);
 
         return dataNode;
     }
