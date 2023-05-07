@@ -7,3 +7,4 @@ import ru.coursework.flightSearchSystem.entities.FlightRequest;
 @Repository
 public interface FlightRequestRepository extends JpaRepository<FlightRequest, Long> {
 }
+

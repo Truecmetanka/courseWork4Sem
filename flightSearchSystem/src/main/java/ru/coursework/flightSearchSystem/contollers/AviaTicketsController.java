@@ -78,7 +78,7 @@ public class AviaTicketsController {
 
         JsonNode dataNode = jsonNode.get("data");
 
-        aviaService.addIATACodeOfAirport(dataNode);
+        aviaService.addIATACodeOfAirline(dataNode);
         aviaService.convertCompanyCodeToName(dataNode);
 
         flightRequest.setCreated_at(LocalDate.now());
@@ -92,7 +92,6 @@ public class AviaTicketsController {
 
     /**
      * Метод получения истории поиска авиабилктов конкретного пользователя
-     *
      *
      * @return json вида  [
      *     {
@@ -116,12 +115,6 @@ public class AviaTicketsController {
             if (flight.getPerson_id() == personId)
                 flightRequests.add(flight);
         }
-
         return flightRequests;
-
-
     }
-
-
-
 }

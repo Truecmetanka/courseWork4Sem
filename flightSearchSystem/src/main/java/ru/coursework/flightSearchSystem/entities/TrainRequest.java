@@ -30,10 +30,5 @@ public class TrainRequest {
     @Column(name = "created_at")
     LocalDate createdAt;
 
-//    @ManyToOne
-//    @JoinColumn(name = "person_id", referencedColumnName = "id")
-//    Person person;
-
-
     long person_id;
 }

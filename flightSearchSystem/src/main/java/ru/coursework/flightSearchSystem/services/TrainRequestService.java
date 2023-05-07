@@ -6,6 +6,7 @@ import ru.coursework.flightSearchSystem.entities.TrainRequest;
 import ru.coursework.flightSearchSystem.repositories.TrainRequestRepository;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -17,15 +18,8 @@ public class TrainRequestService {
         repository.save(trainRequest);
     }
 
-//    public void addRequest(TrainRequest trainRequest) {
-//        LocalDate now = LocalDate.now();
-//        TrainRequest request = new TrainRequest();
-//        request.setCreated_at(trainRequest.getCreated_at());
-//        request.setPerson(trainRequest.getPerson());
-//        request.setDeparture_at(trainRequest.getDeparture_at());
-//        request.setFrom(trainRequest.getFrom());
-//        request.setTo(trainRequest.getTo());
-//        repository.save(request);
-//    }
+    public List<TrainRequest> findAll() {
+        return repository.findAll();
+    }
 
 }

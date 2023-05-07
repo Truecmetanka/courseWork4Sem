@@ -6,6 +6,7 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import ru.coursework.flightSearchSystem.entities.FlightRequest;
 import ru.coursework.flightSearchSystem.entities.Person;
 import ru.coursework.flightSearchSystem.services.TrainRequestService;
 import ru.coursework.flightSearchSystem.services.TrainService;
@@ -14,6 +15,8 @@ import ru.coursework.flightSearchSystem.util.AuthenticatedPersonService;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -114,7 +117,7 @@ public class TrainController {
                 "&to=" + to +
                 "&lang=ru_RU" +
                 "&page=1" +
-                "&date=" + trainRequest.getCreatedAt() +
+                "&date=" + trainRequest.getDepartureAt() +
                 "&apikey=8a9f7fda-a5fc-451d-b0ac-8035ae9158ba" +
                 "&system=yandex";
 
@@ -132,5 +135,20 @@ public class TrainController {
         trainRequestService.saveRequest(trainRequest);
 
         return dataNode;
+    }
+
+
+
+    @GetMapping("/get_train_search_history")
+    public List<TrainRequest> getSearchHistory() {
+        long personId = authenticatedPersonService.getAuthenticatedPerson().getId();
+
+        List<TrainRequest> trainRequests = new ArrayList<>();
+
+        for(TrainRequest trainRequest : trainRequestService.findAll()) {
+            if (trainRequest.getPerson_id() == personId)
+                trainRequests.add(trainRequest);
+        }
+        return trainRequests;
     }
 }
