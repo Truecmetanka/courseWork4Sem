@@ -2,14 +2,21 @@ package ru.coursework.flightSearchSystem.contollers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import ru.coursework.flightSearchSystem.entities.FlightRequest;
+import ru.coursework.flightSearchSystem.entities.Person;
+import ru.coursework.flightSearchSystem.services.TrainRequestService;
 import ru.coursework.flightSearchSystem.services.TrainService;
-import ru.coursework.flightSearchSystem.util.TrainRequest;
+import ru.coursework.flightSearchSystem.entities.TrainRequest;
+import ru.coursework.flightSearchSystem.util.AuthenticatedPersonService;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -17,6 +24,9 @@ import java.util.ArrayList;
 public class TrainController {
 
     private final TrainService trainService;
+    private final TrainRequestService trainRequestService;
+    private final AuthenticatedPersonService authenticatedPersonService;
+    private final EntityManager entityManager;
 
     /**
      * @param trainRequest вида {
@@ -95,46 +105,50 @@ public class TrainController {
      */
 
     @PostMapping("/getTrains")
-    public ArrayList<JsonNode> getTrains(@RequestBody TrainRequest trainRequest) throws IOException {
+    public JsonNode getTrains(@RequestBody TrainRequest trainRequest) throws IOException {
 
-        ArrayList<String> from = trainService.findCodeByName(trainRequest.getFrom());
-        ArrayList<String> to = trainService.findCodeByName(trainRequest.getTo());
+        String from = trainService.findCodeByName(trainRequest.getFrom());
+        String to = trainService.findCodeByName(trainRequest.getTo());
 
-        ArrayList<JsonNode> allRoutes = new ArrayList<>();
 
-        for (String code_from: from) {
-            for (String code_to: to) {
-                try {
-                    String urlToApi = "https://api.rasp.yandex.net/v3.0/search/?" +
-                            "format=json" +
-                            "&from=" + code_from +
-                            "&to=" + code_to +
-                            "&lang=ru_RU" +
-                            "&page=1" +
-                            "&date=" + trainRequest.getDeparture_at() +
-                            "&apikey=7fe3b687-8829-417a-b302-995608a402a9" +
-                            "&system=yandex";
+        String urlToApi = "https://api.rasp.yandex.net/v3.0/search/?" +
+                "format=json" +
+                "&from=" + from +
+                "&to=" + to +
+                "&lang=ru_RU" +
+                "&page=1" +
+                "&date=" + trainRequest.getDepartureAt() +
+                "&apikey=8a9f7fda-a5fc-451d-b0ac-8035ae9158ba" +
+                "&system=yandex";
 
-                    RestTemplate restTemplate = new RestTemplate();
-                    String result = restTemplate.getForObject(urlToApi, String.class);
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.getForObject(urlToApi, String.class);
 
-                    ObjectMapper mapper = new ObjectMapper();
-                    JsonNode jsonNode = mapper.readTree(result);
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonNode = mapper.readTree(result);
 
-                    //        boolean success = jsonNode.get("success").asBoolean();
-                    //        String currency = jsonNode.get("currency").asText();
+        JsonNode dataNode = jsonNode.get("segments");
 
-                    JsonNode dataNode = jsonNode.get("segments");
+        trainRequest.setCreatedAt(LocalDate.now());
+        trainRequest.setPerson_id(authenticatedPersonService.getAuthenticatedPerson().getId());
 
-                    if (dataNode.size() > 0) {
-                        allRoutes.add(dataNode);
-                    }
-                }
-                catch (Exception e) {
+        trainRequestService.saveRequest(trainRequest);
 
-                }
-            }
+        return dataNode;
+    }
+
+
+
+    @GetMapping("/get_train_search_history")
+    public List<TrainRequest> getSearchHistory() {
+        long personId = authenticatedPersonService.getAuthenticatedPerson().getId();
+
+        List<TrainRequest> trainRequests = new ArrayList<>();
+
+        for(TrainRequest trainRequest : trainRequestService.findAll()) {
+            if (trainRequest.getPerson_id() == personId)
+                trainRequests.add(trainRequest);
         }
-        return allRoutes;
+        return trainRequests;
     }
 }

@@ -19,14 +19,12 @@ public class AviaService {
                 "src/main/resources/static/iatacodescities.json")));
         JSONArray airports = new JSONArray(json); // Создаем массив JSON объектов из содержимого файла
 
-
         for (int i = 0; i < airports.length(); i++) {
             JSONObject airport = airports.getJSONObject(i);
             if (airport != null && airport.optString("name").equals(city)) {
                 return airport.optString("code"); // Возвращаем IATA код для найденного города
             }
         }
-
         return "City not found"; // Если город не найден, возвращаем null
     }
 
@@ -42,30 +40,24 @@ public class AviaService {
                 return company.optString("name");
             }
         }
-
         return null;
     }
 
     public void convertCompanyCodeToName(JsonNode dataNode) throws IOException {
 
-        for (int i = 0; i < dataNode.size() ; i++) {
+        for (int i = 0; i < dataNode.size(); i++) {
             JsonNode airlineNode = dataNode.get(i);
             String name = getCompanyNameByCode(dataNode.get(i).get("airline").asText());
             TextNode newAirlineNode = new TextNode(name);
 
             ((ObjectNode) airlineNode).set("airline", newAirlineNode);
-
-
         }
     }
 
-    public void addIATACodeOfAirport(JsonNode dataNode) {
-        for (int i = 0; i < dataNode.size() ; i++) {
-
+    public void addIATACodeOfAirline(JsonNode dataNode) {
+        for (int i = 0; i < dataNode.size(); i++) {
             TextNode newAirlineNode = new TextNode(dataNode.get(i).get("airline").asText());
             ((ObjectNode) dataNode.get(i)).set("IATA", newAirlineNode);
-
         }
     }
-
 }

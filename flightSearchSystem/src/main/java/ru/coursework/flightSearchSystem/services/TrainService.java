@@ -8,8 +8,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Locale;
 
 @Service
 public class TrainService {
@@ -52,11 +50,10 @@ public class TrainService {
 
 
 
-    public ArrayList<String> findCodeByName(String name) throws IOException {
+    public String findCodeByName(String name) throws IOException {
         String json = new String(Files.readAllBytes(Paths.get("src/main/resources/static/staioncodes.json")));
         JSONObject stations = new JSONObject(json);
         JSONArray countries = stations.getJSONArray("countries");
-        ArrayList<String> all_codes = new ArrayList<>();
 
         for (int i = 0; i < countries.length(); i++) {
             JSONObject country = countries.getJSONObject(i);
@@ -72,15 +69,15 @@ public class TrainService {
 
                     for (int l = 0; l < stationsLowLevel.length(); l++) {
                         JSONObject stationLowLevel = stationsLowLevel.getJSONObject(l);
-                        if (stationLowLevel.optString("title").toLowerCase().contains(name.toLowerCase())) {
+                        if (stationLowLevel.optString("title").equals(name)) {
                             JSONObject codes = stationLowLevel.getJSONObject("codes");
-                            all_codes.add(codes.optString("yandex_code"));
+                            return codes.optString("yandex_code");
                         }
                     }
                 }
             }
         }
-        return all_codes;
+        return null;
     }
 
 }

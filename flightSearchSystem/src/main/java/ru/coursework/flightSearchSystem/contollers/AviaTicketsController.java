@@ -4,15 +4,18 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import ru.coursework.flightSearchSystem.entities.Person;
 import ru.coursework.flightSearchSystem.services.AviaService;
-import ru.coursework.flightSearchSystem.util.FlightRequest;
+import ru.coursework.flightSearchSystem.entities.FlightRequest;
+import ru.coursework.flightSearchSystem.services.FlightRequestService;
+import ru.coursework.flightSearchSystem.util.AuthenticatedPersonService;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -20,6 +23,8 @@ import java.io.IOException;
 public class AviaTicketsController {
 
     private final AviaService aviaService;
+    private final AuthenticatedPersonService authenticatedPersonService;
+    private final FlightRequestService flightRequestService;
 
     /**
      * @param flightRequest json вида {
@@ -73,9 +78,43 @@ public class AviaTicketsController {
 
         JsonNode dataNode = jsonNode.get("data");
 
-        aviaService.addIATACodeOfAirport(dataNode);
+        aviaService.addIATACodeOfAirline(dataNode);
         aviaService.convertCompanyCodeToName(dataNode);
 
+        flightRequest.setCreated_at(LocalDate.now());
+        flightRequest.setPerson_id(authenticatedPersonService.getAuthenticatedPerson().getId());
+
+        flightRequestService.saveRequest(flightRequest);
+
         return dataNode;
+    }
+
+
+    /**
+     * Метод получения истории поиска авиабилктов конкретного пользователя
+     *
+     * @return json вида  [
+     *     {
+     *         "id": 2,
+     *         "origin": "Москва",
+     *         "destination": "Казань",
+     *         "departure_at": "2023-06-05",
+     *         "return_at": "2023-06-06",
+     *         "created_at": "2023-05-06",
+     *         "person_id": 2
+     *     }
+     * ]
+     */
+    @GetMapping("/get_flight_search_history")
+    public List<FlightRequest> getSearchHistory() {
+        long personId = authenticatedPersonService.getAuthenticatedPerson().getId();
+
+        List<FlightRequest> flightRequests = new ArrayList<>();
+
+        for(FlightRequest flight : flightRequestService.findAll()) {
+            if (flight.getPerson_id() == personId)
+                flightRequests.add(flight);
+        }
+        return flightRequests;
     }
 }
