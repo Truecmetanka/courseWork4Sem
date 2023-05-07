@@ -17,11 +17,6 @@ export const fetchFlights = createAsyncThunk('getFlights',
             "destination": query.destination,
             "departure_at": query.departure_at,
             "return_at": query.return_at
-        },
-        {
-            headers: {
-                "Authorization" : `Bearer ${cookie.get("token")}`,
-            }
         })
 
         return data.data
@@ -35,11 +30,6 @@ export const fetchTrains = createAsyncThunk('getTrains',
             "from": query.origin,
             "to": query.destination,
             "departure_at": query.departure_at
-        },
-        {
-            headers: {
-                "Authorization" : `Bearer ${cookie.get("token")}`,
-            }
         })
 
         return data.data
@@ -55,11 +45,6 @@ export const fetchBuses = createAsyncThunk('getFlights',
             "destination": query.destination,
             "departure_at": query.departure_at,
             "return_at": query.return_at
-        },
-        {
-            headers: {
-                "Authorization" : `Bearer ${cookie.get("token")}`,
-            }
         })
 
         return data.data

@@ -28,7 +28,7 @@ const Header = () => {
                 <Link to='/register'>Регистрация</Link>
               </span>
             : <span>
-                <Link to='/account'>Аккаунт</Link>
+                <Link to='/account'>Профиль</Link>
                 <span onClick={() => {
                   cookie.remove("token")
                   setAuthed(false)

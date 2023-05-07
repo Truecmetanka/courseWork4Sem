@@ -5,7 +5,7 @@
     justify-content: space-between;
     padding: 20px;
     color: white;
-    background-color: rgba(0, 0, 0, 0.062);
+    background-color: rgb(100, 97, 255);
     box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.062);
     position: sticky;
     top: 0;
@@ -23,7 +23,7 @@ header * {
     justify-content: space-evenly;
     flex-wrap: wrap;
     align-items: center;
-    width: 150px;
+    width: 175px;
 }
 
 .header .acc > span:nth-child(1) {
@@ -34,4 +34,15 @@ header * {
 .header .acc * {
     text-decoration: none;
     display: block;
+}
+
+.header .acc > :nth-child(2) > * {
+    border-radius: 20px;
+    transition: all 0.25s ease-in-out;
+    padding: 0 20px;
+}
+
+
+.header .acc > :nth-child(2) > :hover {
+    background-color: rgb(92, 56, 255);
 }

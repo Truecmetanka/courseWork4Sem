@@ -3,8 +3,12 @@ import classes from './MainPage.module.css'
 import Header from '../../components/Header/Header'
 import SearchBox from '../../components/SearchBox/SearchBox'
 import TicketList from '../../components/TicketsList/TicketList'
+import { useSelector } from 'react-redux'
+import { selectRoutes } from '../../redux/slices/routes'
+import MainPlaceHolder from '../../components/MainPlaceHolder/MainPlaceHolder'
 
 const MainPage = () => {
+
   return (
     <>
         <Header/>
