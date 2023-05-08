@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { BiErrorCircle } from "react-icons/bi";
 import Cookies from 'universal-cookie'
+import Footer from '../../components/Footer/Footer';
 
 const RegPage = () => {
 
@@ -53,34 +54,39 @@ const RegPage = () => {
 
   return (
     <div className={classes.wrap}>
-        <div style={{top: error.visibility ? "20px" : "-100%"}} className={classes.err_mes}>
-            <span>
-                <BiErrorCircle/>
-            </span>
-            {error.message}
-        </div>
-        <div className={classes.reg}>
-            <h1>Регистрация</h1>
-            <form>
-                <label htmlFor="usrname">Имя пользователя:</label>
-                <input type="text" name='usrname' required value={inf.username}
-                    onChange={(event) => setInf({...inf, username: event.target.value})}/>
-                <label htmlFor="email">E-mail:</label>
-                <input type="email" name='email' required value={inf.email}
-                    onChange={(event) => setInf({...inf, email: event.target.value})}/>
-                <label htmlFor="pass">Пароль:</label>
-                <input type="password" name='pass' required value={inf.password}
-                    onChange={(event) => setInf({...inf, password: event.target.value})}/>
-                <label htmlFor="pass_confirm">Повторите пароль:</label>
-                <input value={inf.conf} type="password" name='pass_confirm' required
-                    onChange={(event) => setInf({...inf, conf: event.target.value})}/>
-                <button onClick={(event) => {action(event)}}>Зарегестрироваться</button>
-            </form>
-        </div>
-        <div className={classes.navs}>
-            <Link to='/'>&laquo; Вернуться на главную</Link>
-            <Link to='/login'>Уже есть аккаунт?&raquo;</Link>
-        </div>
+        <main className={classes.main}>
+            <div style={{top: error.visibility ? "20px" : "-100%"}} className={classes.err_mes}>
+                <span>
+                    <BiErrorCircle/>
+                </span>
+                {error.message}
+            </div>
+            <div className={classes.reg}>
+                <h1>Регистрация</h1>
+                <form>
+                    <label htmlFor="usrname">Имя пользователя:</label>
+                    <input type="text" name='usrname' required value={inf.username}
+                        onChange={(event) => setInf({...inf, username: event.target.value})}/>
+                    <label htmlFor="email">E-mail:</label>
+                    <input type="email" name='email' required value={inf.email}
+                        onChange={(event) => setInf({...inf, email: event.target.value})}/>
+                    <label htmlFor="pass">Пароль:</label>
+                    <input type="password" name='pass' required value={inf.password}
+                        onChange={(event) => setInf({...inf, password: event.target.value})}/>
+                    <label htmlFor="pass_confirm">Повторите пароль:</label>
+                    <input value={inf.conf} type="password" name='pass_confirm' required
+                        onChange={(event) => setInf({...inf, conf: event.target.value})}/>
+                    <button onClick={(event) => {action(event)}}>Зарегестрироваться</button>
+                </form>
+            </div>
+            <div className={classes.navs}>
+                <Link to='/'>&laquo; Вернуться на главную</Link>
+                <Link to='/login'>Уже есть аккаунт?&raquo;</Link>
+            </div>
+        </main>
+        <footer>
+          <Footer/>
+        </footer>
     </div>
   )
 }

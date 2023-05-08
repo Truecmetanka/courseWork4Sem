@@ -49,7 +49,7 @@ const TicketList = () => {
                     IATA={ticket.IATA} 
                     origin={query.origin}
                     destination={query.destination}/>)}
-            {data.trains.map((station) => station.map((ticket, index) => 
+            {data.trains.map((ticket, index) => 
                 <TrainTicketCard key={index}
                     route_num={ticket.thread.number}
                     route_title={ticket.thread.title}
@@ -63,7 +63,7 @@ const TicketList = () => {
                     dep_code={ticket.from.code}
                     arr_code={ticket.to.code}
                 />
-            ))}
+            )}
         </div>
         :   <MainPlaceHolder/>
         }

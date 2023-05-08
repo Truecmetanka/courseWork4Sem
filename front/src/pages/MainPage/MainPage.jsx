@@ -6,6 +6,7 @@ import TicketList from '../../components/TicketsList/TicketList'
 import { useSelector } from 'react-redux'
 import { selectRoutes } from '../../redux/slices/routes'
 import MainPlaceHolder from '../../components/MainPlaceHolder/MainPlaceHolder'
+import Footer from '../../components/Footer/Footer'
 
 const MainPage = () => {
 
@@ -18,6 +19,9 @@ const MainPage = () => {
             <SearchBox/>
             <TicketList/>
         </main>
+        <footer>
+          <Footer/>
+        </footer>
     </>
   )
 }

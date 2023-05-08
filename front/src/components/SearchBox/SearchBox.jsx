@@ -1,12 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import classes from './SearchBox.module.css'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useRef } from 'react'
-import { setQuery } from '../../redux/slices/query'
+import { selectQuery, setQuery } from '../../redux/slices/query'
 import { fetchBuses, fetchFlights, fetchTrains } from '../../redux/slices/routes'
+import { useLocation } from 'react-router-dom'
 
-const SearchBox = () => {
+const SearchBox = (props) => {
   
+  const location = useLocation()
+
   const dispatch = useDispatch()
   const [vehicles, setVehicles] = useState([])
 
@@ -36,13 +39,26 @@ const SearchBox = () => {
       vehicles: vehicles
     }))
   }
+
+  const query = useSelector(selectQuery)
+
+  useEffect(() => {
+    if (query.vehicles.length > 0) {
+      origin.current.value = query.origin
+      destination.current.value = query.destination
+      departure_at.current.value = query.departure_at
+      return_at.current.value = query.return_at
+      setVehicles(query.vehicles)
+      console.log(vehicles)
+    }
+  }, [query])
   
 
   return (
     <div className={classes.searchbox}>
       <div className={classes.vehicles}>
         <button style={{
-          outline: (vehicles.sort().toString() === allVehicles.sort().toString() ? "5px solid #00AA00" : "0")
+          outline: (vehicles.length === 3 ? "5px solid #00AA00": "0")
           }}
           onClick={() => {setVehicles(vehicles.sort().toString() === allVehicles.sort().toString() ? [] : [...allVehicles])}}
           >Все билеты</button>

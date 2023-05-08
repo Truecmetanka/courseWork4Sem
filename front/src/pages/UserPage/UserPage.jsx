@@ -1,12 +1,19 @@
 import React from 'react'
 import Header from '../../components/Header/Header'
 import SearchHistory from '../../components/SearchHistory/SearchHistory'
+import ProfileCard from '../../components/ProfileCard/ProfileCard'
+import classes from './UserPage.module.css'
 
 const UserPage = () => {
   return (
     <>
-        <Header/>
-        <SearchHistory/>
+        <header>
+          <Header/>
+        </header>
+        <main className={classes.main}>
+          <ProfileCard/>
+          <SearchHistory/>
+        </main>
     </>
   )
 }

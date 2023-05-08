@@ -1,4 +1,11 @@
 .wrap {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.main {
     min-width: 300px;
     width: 50vw;
     max-width: 600px;

@@ -12,7 +12,6 @@ const TrainTicketCard = ({route_num, route_title, origin, logo, carrier,
     const weekdays = ["Вск", "Пн", "Вт", "Ср", "Чт","Пт", "Сб"]
 
     const leadZeroes = (num) => {
-        console.log(("0" + num).slice(-2))
         return ("0" + num).slice(-2)
     }
 
@@ -21,7 +20,7 @@ const TrainTicketCard = ({route_num, route_title, origin, logo, carrier,
   return (
     <div className={classes.card}>
         <div className={classes.info}>
-            <img src={logo} height="30px"/>
+            <img src="https://yastat.net/s3/rasp/media/data/company/logo/logo.gif" height="30px"/>
         </div>
         <div>
             <div className={classes.trip}>

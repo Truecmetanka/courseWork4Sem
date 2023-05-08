@@ -6,14 +6,13 @@
     padding: 20px;
     color: white;
     background-color: rgb(100, 97, 255);
-    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.062);
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.37);
     position: sticky;
     top: 0;
 }
 
 header * {
     user-select: none;
-    cursor: pointer;
     color: white;
     text-decoration: none;
 }
@@ -40,6 +39,7 @@ header * {
     border-radius: 20px;
     transition: all 0.25s ease-in-out;
     padding: 0 20px;
+    cursor: pointer;
 }
 
 
